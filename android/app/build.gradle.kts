@@ -42,3 +42,13 @@ android {
 flutter {
     source = "../.."
 }
+
+// Pre-create the build output directory so flutter.bat can write into it
+// without hitting Windows ERROR_PATH_NOT_FOUND on missing intermediate directories.
+tasks.configureEach {
+    if (name.startsWith("compileFlutterBuild")) {
+        doFirst {
+            layout.buildDirectory.asFile.get().mkdirs()
+        }
+    }
+}
